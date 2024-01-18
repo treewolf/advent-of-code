@@ -19,6 +19,8 @@ class Card:
         self.id = None
         self.win = None
         self.hand = None
+        # ensure card is handled at least once
+        self.repeat = 1
         self.parse(value)
 
     def parse(self, value: str):
@@ -36,21 +38,29 @@ class Card:
         return f"Card {self.id} win:{self.win} hand:{self.hand}"
 
 
-def process_card(card: Card, myinput: list):
-    pass
-
-
 def main():
-    myinput = read_input("test-input.txt")
+    myinput = read_input("input.txt")
+
+    # make the card first
+    cards = list()
+    for i in range(len(myinput)):
+        cards.append(Card(myinput[i]))
 
     total = 0
 
-    for i in myinput:
-        c = Card(i)
-        matches = set(c.win).intersection(set(c.hand))
-        print(matches)
-        if matches:
-            process_card(c, myinput)
+    # perform comparison logic on card hands
+    for i in range(len(cards)):
+        matches = set(cards[i].win).intersection(set(cards[i].hand))
+        print(f"matches for card {i}: {matches}")
+
+        while cards[i].repeat > 0:
+
+            # iterate from current card to increase repeat of subsequent cards
+            for j in range(len(matches)):
+                cards[i + j + 1].repeat += 1
+
+            cards[i].repeat -= 1
+            total += 1
 
     print(f"total: {total}")
 
