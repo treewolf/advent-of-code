@@ -1,0 +1,45 @@
+use std::fs;
+
+fn main() {
+    let mut contents = fs::read_to_string("input.txt")
+        .expect("Cannot read file");
+    contents.truncate(contents.trim().len());
+
+    let mut marker = 50;
+    let mut zero_count = 0;
+
+    let entries = contents.split("\n");
+    for entry in entries 
+    {
+        // split entry by L or R, and then number
+        let (direction, rotation_string) = entry.split_at(1);
+        let rotations: i32 = rotation_string.parse().expect("Not a valid number");
+
+        let effective_rotations;
+
+        if rotations >= 100 {
+            zero_count += rotations / 100;
+            effective_rotations = rotations % 100;
+        }
+        else {
+            effective_rotations = rotations;
+        }
+
+        if direction == "L" {
+            let final_position = (marker - effective_rotations + 100) % 100;
+            if final_position > marker {
+                zero_count += 1;
+            }
+            marker = final_position;
+        }
+        else {
+            let final_position = (marker + effective_rotations) % 100;
+            if final_position < marker {
+                zero_count += 1;
+            }
+            marker = final_position;
+        }
+
+    }
+    dbg!(zero_count);
+}
