@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    let contents = fs::read_to_string("test1-input.txt").expect("Cannot read file");
+    let contents = fs::read_to_string("input.txt").expect("Cannot read file");
     let entries: Vec<&str> = contents.trim().split('\n').collect();
 
     let mut marker: i32 = 50;
@@ -44,6 +44,9 @@ fn main() {
             marker = final_mark % 100;
         } else if final_mark < 0 {
             marker = (final_mark % 100) + 100;
+            if marker % 100 == 0 {
+                marker = 0;
+            }
         } else {
             marker = final_mark;
         }
