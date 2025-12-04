@@ -37,7 +37,7 @@ fn valid_spot(grid: &mut Vec<Vec<u8>>, neighbor_limit: usize) -> Vec<(usize, usi
     let rows = grid.len();
     let cols = grid[0].len();
 
-    let directions = vec![
+    const DIRECTIONS: [(isize, isize); 8] = [
         (-1, 0),
         (1, 0),
         (0, -1),
@@ -57,7 +57,7 @@ fn valid_spot(grid: &mut Vec<Vec<u8>>, neighbor_limit: usize) -> Vec<(usize, usi
                 continue;
             }
 
-            for (dx, dy) in &directions {
+            for (dx, dy) in &DIRECTIONS {
                 let new_x = i as isize + dx;
                 let new_y = j as isize + dy;
 
@@ -68,7 +68,6 @@ fn valid_spot(grid: &mut Vec<Vec<u8>>, neighbor_limit: usize) -> Vec<(usize, usi
                     }
                 }
             }
-            println!("{:?}: {}", (i, j), neighbors_count);
 
             if neighbors_count < neighbor_limit {
                 spots.push((i, j));
